@@ -1,0 +1,185 @@
+<html ng-app="minhaApp" ng-controller="meuController" ng-init="carregarDados()">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Netflix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="./estilos.css" rel="stylesheet">
+  <link href="./filme.css" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <div class="netflixLogo">
+        <a id="logo" href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/logo.PNG?raw=true" alt="Logo Image"></a>
+      </div>      
+      <nav class="main-nav">                
+        <a href="#home">Home</a>
+        <a href="#tvShows">TV Shows</a>
+        <a href="#movies">Movies</a>
+        <a href="#originals">Originals</a>
+        <a href="#">Recently Added</a>
+        <a target="_blank" href="https://codepen.io/cb2307/full/NzaOrm">Portfolio</a>        
+      </nav>
+      <nav class="sub-nav">
+        <input type="text" placeholder="Buscar filme" ng-model="buscaTituloFilme">
+        <a href="#" ng-click="procurarFilmesPeloTitulo(buscaTituloFilme)">
+          <i class="fas fa-search sub-nav-logo"></i>
+        </a>
+        <a href="#"><i class="fas fa-bell sub-nav-logo"></i></a>
+        <a href="#">Account</a>        
+      </nav>      
+    </header>
+    <!-- END OF HEADER -->
+    
+    <!-- MAIN CONTAINER -->
+    <section class="main-container" >
+      <section>
+        <div class="box">
+          <a href="#topo" ng-repeat="i in tituloFilmeBusca" ng-click="buscarFilme(i.id)">
+            <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+          </a>            
+        </div>
+      </section>
+
+      <section
+      class="featured"
+      style="
+        background-image: url('{{ caminhoFoto + filme.backdrop_path }}');
+      "
+      >
+      <div class="featured--vertical">
+        <a name="topo"></a>
+        <div class="featured--horizontal">
+          <div class="featured--name">{{ filme.title }}</div>
+          <div class="featured--info">
+            <div class="featured--points">{{ filme.vote_average }} pontos</div>
+            <div class="featured--year">{{ filme.release_date.substring(0, 4) }}</div>
+            <div class="featured--seasons"></div>
+          </div>
+          <div class="featured--description">
+            {{ filme.overview }}
+          </div>
+          <div class="featured--buttons">
+            <a
+              href="{{ filme.homepage }}"
+              target="_blank"
+              class="featured--watchbutton"
+              >► Assitir</a
+            >
+            <a href="#creditoFilme" class="featured--mylistbutton"ng-click="buscarFilmeCreditos(filme.id)">Créditos </a>
+          </div>
+          <div class="featured-genres">
+            <strong>Gêneros:</strong>
+            <strong ng-repeat="i in filme.genres">{{ i.name + '; '}}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="box">
+      <a name="creditoFilme"></a>
+      <h1>{{ 'Elenco' }}</h1>
+      <p ng-repeat="i in creditos.cast">{{ i.name }}</p>
+      <h1>{{ 'Equipe Técnica' }}</h1>
+      <p ng-repeat="x in creditos.crew">{{ x.name }}</p>
+    </div>
+      
+      <div>
+        <h1>Em Alta</h1>
+          <div class="box">
+            <a href="#topo" ng-repeat="i in alta" ng-click="buscarFilme(i.id)">
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>
+          </div>
+
+          <h1>Ação</h1>
+          <div class="box">
+            <a href="#topo" ng-repeat="i in acao" ng-click="buscarFilme(i.id)">
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>            
+          </div>
+
+          <h1>Comédia</h1>
+          <div class="box">
+            <a href="#topo" ng-repeat="i in comedia" ng-click="buscarFilme(i.id)">
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>            
+          </div>
+
+          <h1>Romance</h1>
+          <div class="box">
+            <a href="#topo" ng-repeat="i in romance" ng-click="buscarFilme(i.id)">
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>            
+          </div>
+
+          <h1>Lançamentos</h1>
+          <div class="box">
+            <a href="#topo" ng-repeat="i in lancamento" ng-click="buscarFilme(i.id)">
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>            
+          </div>
+
+          <h1>Buscar filmes por atores</h1>
+          <input type="text" placeholder="Buscar nome do ator" ng-model="buscaNomeAtor">
+          <a href="" ng-click="procurarFilmesPeloAtor(buscaNomeAtor)">
+            <i class="fas fa-search sub-nav-logo"></i>
+          </a>
+          <div class="box">
+            <a href="" ng-repeat="i in nomeAtorBusca" ng-click="buscarFilme(i.id)">
+              <h5>{{ i.name + ': ' }}</strong>
+              <span ng-repeat="x in i.known_for" >{{ x.name }};</span>
+              <img ng-src="{{ caminhoPoster + i.poster_path }}" alt="">
+            </a>            
+          </div>
+
+          <h1>Lista de generos</h1>
+          <div class="box">
+            <a href="" ng-repeat="i in generos.genres">
+              <h3>{{ i.name }}</h3>
+            </a>            
+          </div>
+      </div>
+    <!-- END OF MAIN CONTAINER -->
+
+    <!-- LINKS -->
+    <section class="link">
+      <div class="logos">
+        <a href="#"><i class="fab fa-facebook-square fa-2x logo"></i></a>
+        <a href="#"><i class="fab fa-instagram fa-2x logo"></i></a>
+        <a href="#"><i class="fab fa-twitter fa-2x logo"></i></a>
+        <a href="#"><i class="fab fa-youtube fa-2x logo"></i></a>
+      </div>
+      <div class="sub-links">
+        <ul>
+          <li><a href="#">Audio and Subtitles</a></li>
+          <li><a href="#">Audio Description</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Media Center</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Jobs</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Legal Notices</a></li>
+          <li><a href="#">Corporate Information</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </section>
+    <!-- END OF LINKS -->
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy 1997-2018 Netflix, Inc.</p>
+      <p>Carlos Avila &copy 2018</p>
+    </footer>
+  </div>
+
+  <script src="angular.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
